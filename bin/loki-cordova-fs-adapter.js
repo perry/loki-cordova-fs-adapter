@@ -67,7 +67,13 @@ var LokiCordovaFSAdapter = (function () {
                                 console.warn(TAG, "couldn't find database");
                                 callback(null);
                             } else {
-                                callback(contents);
+                                var n = contents.indexOf('}{"filename":');
+                                if (n === -1) {
+                                    callback(contents);
+                                } else {
+                                    var newContents = contents.substring(0, n+1);
+                                    callback(newContents);
+                                }
                             }
                         };
                         reader.readAsText(file);
